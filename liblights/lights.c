@@ -44,6 +44,11 @@ static int g_backlight = 255;
 #define BATT_FULL		5
 #define BATT_CHARGING	9
 
+#define LOGE
+#define LOGI
+#define LOGV
+
+
 static pthread_t t_battery_checker = 0;
 static int battery_thread_check = 1;
 static int last_battery_state = 0;
