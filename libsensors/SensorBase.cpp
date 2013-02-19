@@ -28,6 +28,7 @@
 
 #include "SensorBase.h"
 
+#define LOGE_IF
 /*****************************************************************************/
 
 SensorBase::SensorBase(
