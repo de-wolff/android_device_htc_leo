@@ -35,6 +35,9 @@
 
 /*****************************************************************************/
 
+#define LOGE
+#define LOGE_IF
+
 struct sensors_poll_context_t {
     struct sensors_poll_device_t device; // must be first
 
