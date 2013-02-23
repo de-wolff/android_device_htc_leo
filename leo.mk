@@ -81,7 +81,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.lge.proximity.delay=10 \
 	mot.proximity.delay=10
 
-PRODUCT_COPY_FILES += \
+NO_PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
 	frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
 	frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \

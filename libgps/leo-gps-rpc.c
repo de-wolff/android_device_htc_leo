@@ -44,7 +44,7 @@
 #define  GPS_DEBUG  0
 
 #if GPS_DEBUG
-#  define  D(...)   LOGD(__VA_ARGS__)
+#  define  D(...)   ALOGD(__VA_ARGS__)
 #else
 #  define  D(...)   ((void)0)
 #endif
@@ -922,11 +922,11 @@ int parse_gps_conf() {
         }
     }
     fclose(file);
-    LOGD("%s() is called: GPS1_XTRA_AUTO_DOWNLOAD_ENABLED = %d", __FUNCTION__, XTRA_AUTO_DOWNLOAD_ENABLED);
-    LOGD("%s() is called: GPS1_XTRA_DOWNLOAD_INTERVAL = %d", __FUNCTION__, XTRA_DOWNLOAD_INTERVAL);
-    LOGD("%s() is called: GPS1_CLEANUP_ENABLED = %d", __FUNCTION__, CLEANUP_ENABLED);
-    LOGD("%s() is called: GPS1_SESSION_TIMEOUT = %d", __FUNCTION__, SESSION_TIMEOUT);
-    LOGD("%s() is called: GPS1_MEASUREMENT_PRECISION = %d", __FUNCTION__, MEASUREMENT_PRECISION);
+    ALOGD("%s() is called: GPS1_XTRA_AUTO_DOWNLOAD_ENABLED = %d", __FUNCTION__, XTRA_AUTO_DOWNLOAD_ENABLED);
+    ALOGD("%s() is called: GPS1_XTRA_DOWNLOAD_INTERVAL = %d", __FUNCTION__, XTRA_DOWNLOAD_INTERVAL);
+    ALOGD("%s() is called: GPS1_CLEANUP_ENABLED = %d", __FUNCTION__, CLEANUP_ENABLED);
+    ALOGD("%s() is called: GPS1_SESSION_TIMEOUT = %d", __FUNCTION__, SESSION_TIMEOUT);
+    ALOGD("%s() is called: GPS1_MEASUREMENT_PRECISION = %d", __FUNCTION__, MEASUREMENT_PRECISION);
     return 0;
 }
 
@@ -973,9 +973,9 @@ int init_leo()
     
     if (!CHECKED[0]) {
         if (use_nmea)
-            LOGD("%s() is called: %s version", __FUNCTION__, "NMEA");
+            ALOGD("%s() is called: %s version", __FUNCTION__, "NMEA");
         else
-            LOGD("%s() is called: %s version", __FUNCTION__, "RPC");
+            ALOGD("%s() is called: %s version", __FUNCTION__, "RPC");
 
         parse_gps_conf();
         if (XTRA_AUTO_DOWNLOAD_ENABLED)

@@ -2,6 +2,6 @@
  {
    "repository": "android_kernel_cmhtcleo",
    "target_path": "kernel/htc/leo",
-   "branch": "ics"
+   "branch": "cm-10.1"
  }
 ]
