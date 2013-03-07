@@ -14,11 +14,30 @@
 # limitations under the License.
 #
 
+
+ROOMSERVICE_BRANCHES := cm10.1 jellybean jb cm10 cm9 ics cm8 gingerbread
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, device/htc/qsd8k-common/qsd8k.mk)
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/firmware/bcm4329/device-bcm.mk)
+
+#$(call inherit-product-if-exists, hardware/qcom/display/Android.mk)
+
+# Overlay
+DEVICE_PACKAGE_OVERLAYS += device/htc/leo/overlay
+
+
 PRODUCT_COPY_FILES += \
 	device/htc/leo/prebuilt/init.htcleo.rc:root/init.htcleo.rc \
 	device/htc/leo/prebuilt/init.htcleo.usb.rc:root/init.htcleo.usb.rc \
 	device/htc/leo/prebuilt/ueventd.htcleo.rc:root/ueventd.htcleo.rc \
 	device/htc/leo/prebuilt/logo.rle:root/logo.rle \
+	device/htc/leo/prebuilt/logo.rle:root/initlogo.rle \
+
+#        device/htc/leo/prebuilt/init.rc:root/init.rc \
+#        device/htc/leo/prebuilt/ueventd.rc:root/ueventd.rc
 
 # Add the postrecoveryboot.sh so that the recovery.fstab can be changed
 PRODUCT_COPY_FILES += \
@@ -55,7 +74,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.ril.emc.mode=2 \
 	mobiledata.interfaces=rmnet0,rmnet1,rmnet2,ppp0
 	
-PRODUCT_PROPERTY_OVERRIDES += \
+NO_PRODUCT_PROPERTY_OVERRIDES += \
 	media.a1026.nsForVoiceRec=0 \
 	media.a1026.enableA1026=1 \
 	ro.media.dec.jpeg.memcap=20000000 \
@@ -64,12 +83,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Default network type.
 # 0 => /* GSM/WCDMA (WCDMA preferred) */
 # 3 => /* GSM/WCDMA (auto mode, according to PRL) */
-PRODUCT_PROPERTY_OVERRIDES += ro.telephony.default_network=0
-	
-PRODUCT_PROPERTY_OVERRIDES += \
-	wifi.interface=wlan0 \
-	ro.ril.disable.power.collapse=0 \
-	wifi.supplicant_scan_interval=60
+PRODUCT_PROPERTY_OVERRIDES += ro.telephony.default_network=3
 
 # Improve touch responsiveness
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -81,20 +95,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.lge.proximity.delay=10 \
 	mot.proximity.delay=10
 
-NO_PRODUCT_COPY_FILES += \
-	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-	frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-	frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-	frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-	frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-	frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-	frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-	frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
-	frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
-	frameworks/base/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-	frameworks/base/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
-	frameworks/base/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml
-
 # media config xml file
 PRODUCT_COPY_FILES += \
 	device/htc/leo/prebuilt/media_profiles.xml:system/etc/media_profiles.xml
@@ -104,7 +104,8 @@ PRODUCT_COPY_FILES += \
 	device/htc/leo/prebuilt/init.d/01modules:system/etc/init.d/01modules \
 	device/htc/leo/prebuilt/init.d/02usb_tethering:system/etc/init.d/02usb_tethering \
 	device/htc/leo/prebuilt/init.d/10mic_level:system/etc/init.d/10mic_level \
-	device/htc/leo/prebuilt/init.d/97ppp:system/etc/init.d/97ppp
+
+#	device/htc/leo/prebuilt/init.d/97ppp:system/etc/init.d/97ppp
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -121,7 +122,6 @@ PRODUCT_PACKAGES += \
 
 # GPU
 PRODUCT_PACKAGES += \
-	copybit.qsd8k \
 	gralloc.qsd8k \
 	hwcomposer.default \
 	hwcomposer.qsd8k \
@@ -129,7 +129,13 @@ PRODUCT_PACKAGES += \
 	libgenlock \
 	libmemalloc \
 	libtilerenderer \
-	libQcomUI
+	libQcomUI \
+	copybit.qsd8k \
+
+PRODUCT_PACKAGES += \
+	libnetcmdiface \
+	dhcpcd.conf \
+	dhdutil 
 
 # Omx
 PRODUCT_PACKAGES += \
@@ -154,6 +160,7 @@ PRODUCT_PACKAGES += \
 	libhtc_ril_wrapper
 
 PRODUCT_PACKAGES += \
+	dashplayer \
 	Stk \
 	Camera \
 	Torch \
@@ -196,7 +203,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	
 # Force 2 buffers - gralloc defaults to 3 and we only have 2
 PRODUCT_PROPERTY_OVERRIDES += \
-	debug.gr.numframebuffers=2
+    debug.sf.hw=1 \
+    debug.composition.type=mdp \
+    debug.gr.numframebuffers=2
 
 # disable jni check	
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -205,7 +214,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Set usb type
 PRODUCT_PROPERTY_OVERRIDES += \
-	persist.sys.usb.config=mass_storage \
+	persist.sys.usb.config=adb \
 	persist.service.adb.enable=1
 	
 PRODUCT_COPY_FILES += \
@@ -222,7 +231,7 @@ PRODUCT_COPY_FILES += \
 	device/htc/leo/prebuilt/htcleo-touchscreen.idc:system/usr/idc/htcleo-touchscreen.idc
 
 # PPP files
-PRODUCT_COPY_FILES += \
+NO_PRODUCT_COPY_FILES += \
 	device/htc/leo/prebuilt/ppp/ip-up:system/etc/ppp/ip-up \
 	device/htc/leo/prebuilt/ppp/ip-down:system/etc/ppp/ip-down \
 	device/htc/leo/prebuilt/ppp/ppp:system/ppp \
@@ -238,5 +247,10 @@ $(call inherit-product, device/htc/common/common.mk)
 # goo.im stuff
 $(call inherit-product, device/htc/leo/goo.mk)
 
+
+
+
+
 PRODUCT_NAME := htc_leo
 PRODUCT_DEVICE := leo
+PRODUCT_BRAND := HTC

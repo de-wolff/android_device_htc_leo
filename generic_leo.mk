@@ -22,6 +22,8 @@
 # Inherit from those products. Most specific first.
 $(call inherit-product, device/htc/leo/leo_eu.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic.mk)
+# QSD8K Commomn Stuff should be taken from android hardware?
+# $(call inherit-product, device/htc/qsd8k-common/qsd8k.mk)
 
 # Discard inherited values and use our own instead.
 PRODUCT_NAME := generic_leo

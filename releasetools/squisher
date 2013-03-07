@@ -83,25 +83,6 @@ cd $REPACK/ota
 printf "Unpacking $OTAPACKAGE..."
 unzip $QUIET $OTAPACKAGE
 
-# leo apps removal
-echo
-printf "leo has limited diskspace so lets remove some unwanted stuff..."
-
-rm -rf $REPACK/ota/system/media/video
-rm -rf $REPACK/ota/system/tts
-
-cd $REPACK/ota/system/app
-
-rm VideoEditor.apk
-rm RomManager.apk
-rm LiveWallpapers.apk
-rm Galaxy4.apk
-rm HoloSpiralWallpaper.apk
-rm MagicSmokeWallpapers.apk
-rm PhaseBeam.apk
-rm VisualizationWallpapers.apk
-rm CMWallpapers.apk
-
 echo
 cd $REPACK/ota/system/framework
 $OPTICHARGER framework-res.apk
